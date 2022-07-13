@@ -78,11 +78,12 @@ public class AppUser implements UserDetails {
         return enabled;
     }
 
-    public AppUser(String firstName, String secondName, String email, Integer age, String password) {
+    public AppUser(String firstName, String secondName, String email, Integer age, String password,AppUserRole appUserRole) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
         this.age = age;
         this.password = password;
+        this.appUserRole=appUserRole;
     }
 }

@@ -17,21 +17,20 @@ public class RegistrationController {
 
     @GetMapping("/{token}")
     public String confirmAppUser(@RequestParam("token") String token){
-        registrationService.confirmToken(token);
-        return "confirmed";
+        return registrationService.confirmToken(token);
     }
 
- /* @GetMapping
+    @GetMapping
     public String registrationForm(AppUser appUser,Model model){
         model.addAttribute("appUser", appUser);
         return "registration_form";
-    }*/
+    }
 
-    @GetMapping
-    public void registerAppUser(@RequestBody AppUser appUser, Model model){
+    @PostMapping
+    public String registerAppUser(@ModelAttribute @RequestBody AppUser appUser, Model model){
         model.addAttribute("appUser", appUser);
         registrationService.registerNewAppUser(appUser);
-       // return "redirect:/login";
+        return "redirect:/login";
     }
 
 }

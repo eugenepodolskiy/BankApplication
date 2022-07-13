@@ -1,6 +1,7 @@
 package com.example.BankApplication.auth.registration;
 
 import com.example.BankApplication.auth.appuser.AppUser;
+import com.example.BankApplication.auth.appuser.AppUserRole;
 import com.example.BankApplication.auth.appuser.AppUserService;
 import com.example.BankApplication.auth.registration.email.EmailSender;
 import com.example.BankApplication.auth.registration.token.ConfirmationToken;
@@ -24,13 +25,14 @@ public class RegistrationService {
             appUser.getSecondName(),
             appUser.getEmail(),
             appUser.getAge(),
-            appUser.getPassword()));
+            appUser.getPassword(),
+            AppUserRole.USER));
 
     String link="http://localhost:8080/registration/confirm?token="+token;
-    emailSender.send(appUser.getEmail(),buildEmail(appUser.getFirstName()+appUser.getSecondName(),link));
+    emailSender.send(appUser.getEmail(),buildEmail(appUser.getFirstName()+" "+appUser.getSecondName(),link));
     }
 
-    public void confirmToken(String token){
+    public String confirmToken(String token){
         ConfirmationToken confirmationToken = confirmationTokenService.
                 getToken(token).orElseThrow(()-> new IllegalStateException("Token not found"));
 
@@ -46,7 +48,7 @@ public class RegistrationService {
         }
         confirmationTokenService.updateConfirmationToken(confirmationToken.toString());
         appUserService.enableAppUser(confirmationToken.getAppUser().getEmail());
-
+        return "confirmed";
     }
 
     private String buildEmail(String name, String link) {
