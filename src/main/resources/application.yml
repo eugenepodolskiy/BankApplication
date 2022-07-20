@@ -10,11 +10,20 @@ spring:
     username: postgres
   jpa:
     hibernate:
+
       ddl-auto: create-drop
+
     properties:
       hibernate:
+        validator:
+          apply_to_ddl: false
+          autoregister_listeners: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+      jakarta:
+        persistence:
+          validation:
+            mode: none
     show-sql: true
 
   mail:
@@ -33,4 +42,3 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-

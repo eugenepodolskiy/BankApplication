@@ -14,6 +14,11 @@ public interface AppUserRepo extends JpaRepository<AppUser,Integer> {
 
     Optional<AppUser> findByEmail(String email);
 
+    Optional<AppUser> findByPassword(String password);
+
+    @Query("SELECT a FROM AppUser as a WHERE UPPER(a.email) LIKE UPPER(?1)")
+    Optional<AppUser> findOneByEmail(String email);
+
     @Modifying
     @Transactional
     @Query("UPDATE AppUser a " +

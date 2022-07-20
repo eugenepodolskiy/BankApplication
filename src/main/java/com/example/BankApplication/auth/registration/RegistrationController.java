@@ -2,9 +2,10 @@ package com.example.BankApplication.auth.registration;
 
 import com.example.BankApplication.auth.appuser.AppUser;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -27,10 +28,14 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String registerAppUser(@ModelAttribute @RequestBody AppUser appUser, Model model){
-        model.addAttribute("appUser", appUser);
+    public String registerAppUser(@RequestBody @Validated @ModelAttribute("appUser") AppUser appUser, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getAllErrors());
+            System.out.println(appUser.getCreationDate());
+            return "registration_form";
+        }
         registrationService.registerNewAppUser(appUser);
-        return "redirect:/login";
+            return "redirect:/login";
     }
 
 }

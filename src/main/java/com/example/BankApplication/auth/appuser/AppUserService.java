@@ -9,12 +9,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AppUserService implements UserDetailsService {
+public class AppUserService implements UserDetailsService{
 
     private final static String USER_NOT_FOUND_MSG="user with email %s not found";
     private final AppUserRepo appUserRepo;
@@ -33,9 +36,7 @@ public class AppUserService implements UserDetailsService {
 
         String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
         appUser.setPassword(encodedPassword);
-
         appUserRepo.save(appUser);
-
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken =new ConfirmationToken(
                 token,
@@ -52,4 +53,14 @@ public class AppUserService implements UserDetailsService {
     public void enableAppUser(String email){
         appUserRepo.enableAppUser(email);
     }
+
+    public Optional<AppUser> findAppUserByEmail(String email){
+        return appUserRepo.findByEmail(email);
+    }
+
+    public boolean isEmailRegistered(final String email) {
+        return appUserRepo.findOneByEmail(email).isPresent();
+    }
+
+    public Optional<AppUser> findAppUserByPassword(String password){return appUserRepo.findByPassword(password);}
 }

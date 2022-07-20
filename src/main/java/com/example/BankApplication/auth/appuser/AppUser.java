@@ -1,20 +1,35 @@
 package com.example.BankApplication.auth.appuser;
 
 
+import com.example.BankApplication.auth.registration.validator.ConfirmPasswordConstraint;
+import com.example.BankApplication.auth.registration.validator.MinForDateConstraint;
+import com.example.BankApplication.auth.registration.validator.UniqueEmailConstraint;
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-@NoArgsConstructor
 @EqualsAndHashCode
+@NoArgsConstructor
 @Getter
 @Setter
 public class AppUser implements UserDetails {
+
 
     @SequenceGenerator(
             name = "app_user_sequence_generator",
@@ -26,16 +41,26 @@ public class AppUser implements UserDetails {
             generator = "app_user_sequence_generator")
     private Integer id;
     @Column(nullable = false)
+    @NotNull
     private String firstName;
     @Column(nullable = false)
+    @NotNull
     private String secondName;
-    @Column(unique = true,
-    nullable = false)
+    @Column(nullable = false,unique = true)
+    @UniqueEmailConstraint(message ="email already taken")
+    @Email
+    @NotNull
     private String email;
+    private final LocalDate creationDate=LocalDate.now();
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @MinForDateConstraint
+    private LocalDate dateOfBirth;
     @Column(nullable = false)
-    private Integer age;
-    @Column(nullable = false)
+    @NotNull
     private String password;
+    @NotNull(message = "Password doesn't match")
+    private String confirmPassword;
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
     private boolean enabled=false;
@@ -78,12 +103,17 @@ public class AppUser implements UserDetails {
         return enabled;
     }
 
-    public AppUser(String firstName, String secondName, String email, Integer age, String password,AppUserRole appUserRole) {
+    public AppUser(String firstName, String secondName, String email, LocalDate dateOfBirth, String password,String confirmPassword, AppUserRole appUserRole) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.password = password;
+        this.confirmPassword=confirmPassword;
         this.appUserRole=appUserRole;
+        
+        
+        
+        
     }
 }
