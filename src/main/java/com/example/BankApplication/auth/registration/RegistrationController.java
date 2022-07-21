@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,11 @@ public class RegistrationController {
 
     @PostMapping
     public String registerAppUser(@RequestBody @Validated @ModelAttribute("appUser") AppUser appUser, BindingResult bindingResult, Model model){
+        if(appUser.getPassword()!=null && appUser.getConfirmPassword()!=null){
+            if(!appUser.getConfirmPassword().equals(appUser.getPassword())){
+                bindingResult.addError(new FieldError("appUser","confirmPassword","Password doesn't match"));
+            }
+        }
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.getAllErrors());
             System.out.println(appUser.getCreationDate());
