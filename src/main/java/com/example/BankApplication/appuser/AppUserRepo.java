@@ -1,4 +1,4 @@
-package com.example.BankApplication.auth.appuser;
+package com.example.BankApplication.appuser;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,4 +25,7 @@ public interface AppUserRepo extends JpaRepository<AppUser,Integer> {
             "SET a.enabled=true " +
             "WHERE a.email=?1")
     int enableAppUser(String email);
+
+    @Query("SELECT a FROM AppUser as a WHERE UPPER(a.email) LIKE UPPER(?1)")
+    AppUser findAppUserByEmail(String email);
 }

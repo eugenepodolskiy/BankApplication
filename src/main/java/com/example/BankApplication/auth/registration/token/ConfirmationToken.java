@@ -1,7 +1,7 @@
 package com.example.BankApplication.auth.registration.token;
 
 
-import com.example.BankApplication.auth.appuser.AppUser;
+import com.example.BankApplication.appuser.AppUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

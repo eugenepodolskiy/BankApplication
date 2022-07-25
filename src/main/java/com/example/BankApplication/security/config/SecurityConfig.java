@@ -1,7 +1,6 @@
 package com.example.BankApplication.security.config;
 
-import com.example.BankApplication.auth.appuser.AppUserService;
-import com.example.BankApplication.security.PasswordEncoder;
+import com.example.BankApplication.appuser.AppUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,12 +25,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/registration/**")
+                    .antMatchers("/registration/**","/bank","/api/**")
                     .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
+                .logout()
+                .logoutSuccessUrl("/bank")
+                .logoutUrl("/logout")
+                .and()
                 .formLogin()
+                .defaultSuccessUrl("/bank")
                 .permitAll();
     }
 

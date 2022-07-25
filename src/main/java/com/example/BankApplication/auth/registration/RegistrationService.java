@@ -1,18 +1,15 @@
 package com.example.BankApplication.auth.registration;
 
-import com.example.BankApplication.auth.appuser.AppUser;
-import com.example.BankApplication.auth.appuser.AppUserRole;
-import com.example.BankApplication.auth.appuser.AppUserService;
+import com.example.BankApplication.appuser.AppUser;
+import com.example.BankApplication.appuser.AppUserRole;
+import com.example.BankApplication.appuser.AppUserService;
 import com.example.BankApplication.auth.registration.email.EmailSender;
 import com.example.BankApplication.auth.registration.token.ConfirmationToken;
 import com.example.BankApplication.auth.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
-import org.joda.time.Years;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor

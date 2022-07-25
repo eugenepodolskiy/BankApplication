@@ -1,6 +1,7 @@
-package com.example.BankApplication.auth.registration;
+package com.example.BankApplication.controller;
 
-import com.example.BankApplication.auth.appuser.AppUser;
+import com.example.BankApplication.appuser.AppUser;
+import com.example.BankApplication.auth.registration.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Controller
 @AllArgsConstructor
@@ -17,7 +20,7 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
 
-    @GetMapping("/{token}")
+    @GetMapping("/confirm")
     public String confirmAppUser(@RequestParam("token") String token){
         return registrationService.confirmToken(token);
     }
@@ -33,6 +36,11 @@ public class RegistrationController {
         if(appUser.getPassword()!=null && appUser.getConfirmPassword()!=null){
             if(!appUser.getConfirmPassword().equals(appUser.getPassword())){
                 bindingResult.addError(new FieldError("appUser","confirmPassword","Password doesn't match"));
+            }
+        }
+        if(appUser.getDateOfBirth()!=null){
+            if(!appUser.getDateOfBirth().isBefore(LocalDate.now().minusYears(18))){
+                bindingResult.addError(new FieldError("appUser","dateOfBirth","You are younger than 18"));
             }
         }
         if (bindingResult.hasErrors()) {

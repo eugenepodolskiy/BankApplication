@@ -1,4 +1,4 @@
-package com.example.BankApplication.auth.appuser;
+package com.example.BankApplication.appuser;
 
 public enum AppUserRole {
     ADMIN,

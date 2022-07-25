@@ -1,4 +1,4 @@
-package com.example.BankApplication.auth.appuser;
+package com.example.BankApplication.appuser;
 
 import com.example.BankApplication.auth.registration.token.ConfirmationToken;
 import com.example.BankApplication.auth.registration.token.ConfirmationTokenService;
@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,4 +62,8 @@ public class AppUserService implements UserDetailsService{
     }
 
     public Optional<AppUser> findAppUserByPassword(String password){return appUserRepo.findByPassword(password);}
+
+    public AppUser findAppUserByUsername(String email){
+        return appUserRepo.findAppUserByEmail(email);
+    }
 }

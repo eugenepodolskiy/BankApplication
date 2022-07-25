@@ -1,13 +1,13 @@
-package com.example.BankApplication.auth.appuser;
+package com.example.BankApplication.appuser;
 
 
+import com.example.BankApplication.card.Card;
 import com.example.BankApplication.auth.registration.validator.MinForDateConstraint;
 import com.example.BankApplication.auth.registration.validator.UniqueEmailConstraint;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @EqualsAndHashCode
@@ -56,7 +57,6 @@ public class AppUser implements UserDetails {
     private final LocalDate creationDate=LocalDate.now();
     @NotNull(message = "Enter your birth date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @MinForDateConstraint
     private LocalDate dateOfBirth;
     @Column(nullable = false)
     @NotBlank(message = "Enter your password")
@@ -67,6 +67,8 @@ public class AppUser implements UserDetails {
     private AppUserRole appUserRole;
     private boolean enabled=false;
     private boolean locked=false;
+    @OneToMany(mappedBy="appUser")
+    private List<Card> cards;
 
 
     @Override
